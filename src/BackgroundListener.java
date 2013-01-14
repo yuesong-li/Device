@@ -50,9 +50,15 @@ public class BackgroundListener extends Thread implements
 	}
 
 	public void handleInfo(String info) {
-		if (info.contains("tz")) {// alarm signal
+		if (info.contains("ad")) {// alarm:door
 			System.out.println(TAG + "ALARM: " + info.trim());
-			pw.println("alarm");
+			pw.println("alarm:door");
+		} else if (info.contains("af")) {
+			System.out.println(TAG + "ALARM: " + info.trim());
+			pw.println("alarm:fire");
+		} else if (info.contains("az")) {
+			System.out.println(TAG + "ALARM: " + info.trim());
+			pw.println("alarm:off");
 		} else {// other information, like requested temperature
 			System.out.println(TAG + info.trim());
 			A2E.infoFromArduino = info.trim();

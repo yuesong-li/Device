@@ -30,7 +30,7 @@ int roomtemp;
 long starttime;
 long endtime;
 long temp;
-boolean start = true;
+boolean start = false;
 boolean alarmSent = false;
 void setup() {
   pinMode(pb0, OUTPUT);
@@ -109,6 +109,10 @@ void loop() {
     digitalWrite(pb3, LOW);
     digitalWrite(pb5, LOW);
     digitalWrite(pb4, LOW);
+    if(start==false){
+      //indicate the alarm is off
+      Serial.println("az");
+    }
     start = true;
   }     
   //door open
@@ -125,8 +129,9 @@ void loop() {
       digitalWrite(pb3, LOW);
       digitalWrite(pb5, LOW);
       digitalWrite(pb4, HIGH);
-      if(alarmSent == false){ 
-        Serial.println("tz");
+      if(alarmSent == false){
+        //'ad' stands for alarm:door
+        Serial.println("ad");
         alarmSent = true;
       }
       delay(100);
@@ -145,6 +150,8 @@ void loop() {
     digitalWrite(pb3, LOW);
     digitalWrite(pb5, LOW);
     digitalWrite(pb4, HIGH);
+    //alarm:fire
+    Serial.println("af");
     delay(100);
   }
   ib = Serial.read();
@@ -334,6 +341,7 @@ void loop() {
     digitalWrite(pb4,LOW);
   }
 }
+
 
 
 

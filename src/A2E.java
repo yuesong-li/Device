@@ -50,9 +50,9 @@ public class A2E implements SerialPortEventListener {
 	//
 	public static String infoFromArduino;
 
-	String deviceStates = "lightIn:off,lightOut:off,fan:off,heaterRoom:off,heaterLoft:off,tempRoom:15,tempLoft:15,bath:off,wash:off,media:off,coffee:off";
+	String deviceStates = "lightIn:off,lightOut:off,fan:off,heaterRoom:off,heaterLoft:off,tempRoom:15,tempLoft:15,bath:off,wash:off,media:off,coffee:off,alarm:off";
 	static int portNumber = 7777;
-	static String serverAddr = "194.47.40.108";
+	static String serverAddr = "194.47.32.216";
 	static Socket client = null;
 	private static String TAG = "A2E: ";
 
