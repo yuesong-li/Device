@@ -32,6 +32,8 @@ long endtime;
 long temp;
 boolean start = false;
 boolean alarmSent = false;
+boolean fire = false;
+boolean fireSent = false;
 void setup() {
   pinMode(pb0, OUTPUT);
   pinMode(pb1, OUTPUT);
@@ -52,21 +54,21 @@ void setup() {
   digitalWrite(pb3, HIGH);
   digitalWrite(pb5, HIGH);
   digitalWrite(pb4,HIGH);
-  //  Serial.println(2);////////inform: lightOut off
+  // Serial.println(2);////////inform: lightOut off
   delay(100);
   //lightIn off
   digitalWrite(pb0, LOW);
   digitalWrite(pb3, HIGH);
   digitalWrite(pb5, LOW);
   digitalWrite(pb4,HIGH);
-  //  Serial.println(4);////////inform: lightIn off
+  // Serial.println(4);////////inform: lightIn off
   delay(100);
   //heaterRoom off
   digitalWrite(pb0, HIGH);
   digitalWrite(pb3, LOW);
   digitalWrite(pb5, HIGH);
   digitalWrite(pb4, HIGH);
-  //  Serial.println(8);////////inform: heaterRoom off
+  // Serial.println(8);////////inform: heaterRoom off
   delay(100);
   //heaterLoft off
   digitalWrite(pb0, LOW);
@@ -97,10 +99,36 @@ void setup() {
   digitalWrite(pd7, LOW);
   Serial.begin(9600);
   start =true;
-
 }
 
 void loop() {
+  if(FireAlarm==HIGH){
+    delay(100);
+    digitalWrite(pb0, LOW);
+    digitalWrite(pb3, LOW);
+    digitalWrite(pb5, LOW);
+    digitalWrite(pb4, HIGH);
+
+    for(int i=0;i<30;i++){
+      delay(100);
+      digitalWrite(pb0, LOW);
+      digitalWrite(pb3, LOW);
+      digitalWrite(pb5, LOW);
+      digitalWrite(pb4, LOW);
+    }
+    delay(100);
+    digitalWrite(pb0, LOW);
+    digitalWrite(pb3, LOW);
+    digitalWrite(pb5, LOW);
+    digitalWrite(pb4, HIGH);
+  }
+  else {
+    delay(100);
+    digitalWrite(pb0, LOW);
+    digitalWrite(pb3, LOW);
+    digitalWrite(pb5, LOW);
+    digitalWrite(pb4,LOW);
+  }
   roomtemp = (5.0 * analogRead(pc2) * 100.0) / 1024;
   lofttemp = (5.0 * analogRead(pc1) * 100.0) / 1024;
   //door closed
@@ -111,10 +139,10 @@ void loop() {
     digitalWrite(pb4, LOW);
     if(start==false){
       //indicate the alarm is off
-      Serial.println("az");
+      Serial.println("z");
     }
     start = true;
-  }     
+  }
   //door open
   if(digitalRead(pd3)==LOW){
     if(start == true){
@@ -131,7 +159,7 @@ void loop() {
       digitalWrite(pb4, HIGH);
       if(alarmSent == false){
         //'ad' stands for alarm:door
-        Serial.println("ad");
+        Serial.println("d");
         alarmSent = true;
       }
       delay(100);
@@ -150,9 +178,20 @@ void loop() {
     digitalWrite(pb3, LOW);
     digitalWrite(pb5, LOW);
     digitalWrite(pb4, HIGH);
-    //alarm:fire
-    Serial.println("af");
+    if(fireSent==false){
+      //alarm:fire
+      Serial.println("f");
+      fireSent = true;
+      fire = false;
+    }
     delay(100);
+  }
+  else{
+    if(fire==false){
+      Serial.println("z");
+      fire = true;
+      fireSent = false;
+    }
   }
   ib = Serial.read();
   if(ib==1){
@@ -324,21 +363,6 @@ void loop() {
     digitalWrite(pb4, HIGH);
   }
   if(ib==24){
-  }
-
-  if(FireAlarm==HIGH){
-    delay(100);
-    digitalWrite(pb0, LOW);
-    digitalWrite(pb3, LOW);
-    digitalWrite(pb5, LOW);
-    digitalWrite(pb4,HIGH);
-  }
-  else {
-    delay(100);
-    digitalWrite(pb0, LOW);
-    digitalWrite(pb3, LOW);
-    digitalWrite(pb5, LOW);
-    digitalWrite(pb4,LOW);
   }
 }
 
